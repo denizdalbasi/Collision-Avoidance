@@ -1,53 +1,62 @@
-## Ultrasonic Distance Sensor Logic
-#Project Overview
-This project demonstrates the implementation of a real-time distance monitoring system using C++ and an Arduino Uno. The software calculates the distance to an object by measuring the time-of-flight of ultrasonic waves and provides visual and auditory feedback based on programmed thresholds.
+# 🧠 System Algorithm – Real-Time Distance Monitoring
 
-#Logic Flow (The Algorithm)
-The program follows a continuous execution loop consisting of four main stages:
+## Overview
+- This document explains the algorithm used in the Real-Time Distance Monitoring System.
+- The system is implemented using **C++ (Arduino)** on an **Arduino Uno**.
+- Distance is measured using an ultrasonic sensor based on **time-of-flight** calculations.
 
-1. The Trigger Phase
-To start a measurement, the software sends a precise 10-microsecond high pulse to the sensor's Trigger pin. This tells the sensor to emit a burst of sound.
+---
 
-2. The Measurement Phase
-The code then uses the pulseIn() function to listen to the Echo pin.
+## 1. Trigger Phase
+- The Arduino sends a **10-microsecond HIGH pulse** to the sensor’s **Trigger pin**.
+- This pulse causes the ultrasonic sensor to emit sound waves.
 
-It measures the time (in microseconds) that it takes for the sound to bounce off an object and return to the sensor.
+---
 
-This value is stored as a variable called duration.
+## 2. Measurement Phase
+- The Arduino listens on the **Echo pin** using the `pulseIn()` function.
+- It measures the time (in microseconds) taken for the sound wave to:
+  - Travel to the object
+  - Reflect back to the sensor
+- The measured time is stored in a variable named `duration`.
 
-3. The Calculation Phase
-To convert time into a readable distance (cm), the code applies the following mathematical formula:
+---
 
-distance= duration×0.034/2
+## 3. Calculation Phase
+- The distance to the object is calculated using the formula:
+  
 
-Why these numbers?
+distance = duration × 0.034 / 2
 
-0.034: The speed of sound is approximately 343 meters per second, which translates to 0.034 centimeters per microsecond.
+- **Formula Explanation:**
+- `0.034` → Speed of sound in cm per microsecond
+- `/ 2` → Accounts for the sound traveling to the object and back
+- The final value represents the distance in **centimeters (cm)**.
 
-Divide by 2: The sound wave travels to the object and back. We only need the distance to the object, so we divide the total travel time in half.
+---
 
-4. The Decision Logic (Conditionals)
-The software evaluates the distance variable against a set threshold (30 cm) to determine the output state:
+## 4. Decision Logic
+- The calculated distance is compared against a **30 cm threshold**.
 
-IF the distance is between 0 and 30 cm:
+### Alert State (0–30 cm)
+- LED on **Pin 12** is turned **ON**
+- Buzzer on **Pin 10** is activated using `tone()`
 
-The system enters an "Alert State."
+### Clear State (> 30 cm)
+- LED on **Pin 12** is turned **OFF**
+- Buzzer is silenced using `noTone()`
 
-Digital Pin 12 is set to HIGH (turns on LED).
+---
 
-The tone() function is called on Pin 10 (activates buzzer).
+## Execution Timing
+- The algorithm runs continuously inside the Arduino `loop()` function.
+- A **100 ms delay** is used between measurements to:
+- Maintain responsiveness
+- Reduce unnecessary CPU usage
 
-ELSE:
+---
 
-The system enters a "Clear State."
-
-Digital Pin 12 is set to LOW.
-
-The noTone() function is called to silence the buzzer.
-
-Software Specifications
-Language: C++ (Arduino)
-
-Communication: Serial communication at 9600 baud for real-time data logging.
-
-Timing: 100ms polling rate to balance responsiveness with CPU efficiency.​
+## Summary
+- The system continuously monitors distance in real time.
+- Visual and auditory alerts are triggered when an object enters the defined proximity range.
+- The algorithm is simple, efficient, and suitable for embedded applications.
