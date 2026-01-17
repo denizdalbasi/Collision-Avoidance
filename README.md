@@ -6,6 +6,9 @@
 - Distance is measured using an ultrasonic sensor based on **time-of-flight** calculations.
 
 ---
+## Prototype Circuit Layout:
+- Is in the main directory called circuit.png
+
 
 ## 1. Trigger Phase
 - The Arduino sends a **10-microsecond HIGH pulse** to the sensor’s **Trigger pin**.
