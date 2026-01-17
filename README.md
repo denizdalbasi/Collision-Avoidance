@@ -1,4 +1,4 @@
-# 🧠 System Algorithm – Real-Time Distance Monitoring
+#  System Algorithm – Real-Time Distance Monitoring
 
 ## Overview
 - This document explains the algorithm used in the Real-Time Distance Monitoring System.
