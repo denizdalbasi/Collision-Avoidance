@@ -27,3 +27,4 @@ The system evaluates the distance every **100ms** against a **30 cm** threshold:
 
 ### 4. Summary
 The algorithm runs in a continuous loop, providing high-speed responsiveness with minimal power consumption, making it ideal for embedded safety applications.
+![Circuit Layout](https://github.com/denizdalbasi/Collision-Avoidance/blob/main/circuit.png?raw=true)
