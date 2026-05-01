@@ -1,65 +1,29 @@
-#  System Algorithm – Real-Time Distance Monitoring
+# Real-Time Distance Monitoring Algorithm
 
-## Overview
-- This document explains the algorithm used in the Real-Time Distance Monitoring System.
-- The system is implemented using **C++ (Arduino)** on an **Arduino Uno**.
-- Distance is measured using an ultrasonic sensor based on **time-of-flight** calculations.
-
----
-## Prototype Circuit Layout:
-- Is in the main directory called circuit.png
-
-
-## 1. Trigger Phase
-- The Arduino sends a **10-microsecond HIGH pulse** to the sensor’s **Trigger pin**.
-- This pulse causes the ultrasonic sensor to emit sound waves.
+This document explains how the Arduino ultrasonic monitoring system works, including the logic it follows and the calculations it performs.
 
 ---
 
-## 2. Measurement Phase
-- The Arduino listens on the **Echo pin** using the `pulseIn()` function.
-- It measures the time (in microseconds) taken for the sound wave to:
-  - Travel to the object
-  - Reflect back to the sensor
-- The measured time is stored in a variable named `duration`.
+### 1. Hardware Integration
+* **Trigger/Echo:** Measures sound wave travel time via the Ultrasonic sensor.
+* **Alert System:** Visual (Pin 12 LED) and Auditory (Pin 10 Buzzer) feedback.
+* **Layout:** Refer to `circuit.png` in the root directory.
 
----
+### 2. Distance Calculation
+The system calculates distance based on the time-of-flight principle:
 
-## 3. Calculation Phase
-- The distance to the object is calculated using the formula:
-  
+$$distance = (duration \times 0.034) / 2$$
 
-distance = duration × 0.034 / 2
+* **0.034:** The speed of sound (cm/μs).
+* **Divided by 2:** Accounts for the round-trip travel of the sound wave.
 
-- **Formula Explanation:**
-- `0.034` → Speed of sound in cm per microsecond
-- `/ 2` → Accounts for the sound traveling to the object and back
-- The final value represents the distance in **centimeters (cm)**.
+### 3. Decision Logic
+The system evaluates the distance every **100ms** against a **30 cm** threshold:
 
----
+| Distance | State | LED (Pin 12) | Buzzer (Pin 10) |
+| :--- | :--- | :--- | :--- |
+| **0 - 30 cm** | Alert | ON | Active |
+| **> 30 cm** | Clear | OFF | Silent |
 
-## 4. Decision Logic
-- The calculated distance is compared against a **30 cm threshold**.
-
-### Alert State (0–30 cm)
-- LED on **Pin 12** is turned **ON**
-- Buzzer on **Pin 10** is activated using `tone()`
-
-### Clear State (> 30 cm)
-- LED on **Pin 12** is turned **OFF**
-- Buzzer is silenced using `noTone()`
-
----
-
-## Execution Timing
-- The algorithm runs continuously inside the Arduino `loop()` function.
-- A **100 ms delay** is used between measurements to:
-- Maintain responsiveness
-- Reduce unnecessary CPU usage
-
----
-
-## Summary
-- The system continuously monitors distance in real time.
-- Visual and auditory alerts are triggered when an object enters the defined proximity range.
-- The algorithm is simple, efficient, and suitable for embedded applications.
+### 4. Summary
+The algorithm runs in a continuous loop, providing high-speed responsiveness with minimal power consumption, making it ideal for embedded safety applications.
